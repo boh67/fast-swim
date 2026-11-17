@@ -7,11 +7,10 @@
   "theme_color": "#07111f",
   "description": "La tua community privata",
   "icons": [
-    {
-      "src": "assets/icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
-    }
-  ]
-}
+  {
+    "src": "file_00000000fe90820a9c0a44e8ade717c3.png",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "any"
+  }
+]
