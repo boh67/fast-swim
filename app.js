@@ -50,6 +50,14 @@ function showApp() {
   document.body.classList.add("ready");
   renderProfile();
   loadPosts();
+
+  if (!profile.username && !$("#profileDialog").open) {
+    $("#nameInput").value = profile.display_name || "";
+    $("#usernameInput").value = "";
+    $("#bioInput").value = profile.bio || "";
+    $("#profileDialog").showModal();
+    toast("Scegli uno username per completare il profilo.");
+  }
 }
 function renderProfile() {
   $("#profileName").textContent = profile.display_name || "Membro FAST SWIM";
