@@ -61,7 +61,8 @@ function showApp() {
 }
 function renderProfile() {
   $("#profileName").textContent = profile.display_name || "Membro FAST SWIM";
-  $("#profileBio").textContent = profile.bio || "Nuovo nella community ✨";
+$("#profileUsername").textContent = profile.username ? "@" + profile.username : "Username non impostato";
+$("#profileBio").textContent = profile.bio || "Nuovo nella community ✨";
   $("#myPosts").innerHTML = posts.filter(p => p.user_id === currentUser.id)
     .map(p => `<div class="mini-post">${esc(p.content)}</div>`).join("") ||
     '<p class="hint">I tuoi post appariranno qui.</p>';
