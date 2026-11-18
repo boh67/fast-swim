@@ -274,18 +274,44 @@ $("#feed").addEventListener("click", async e => {
 });
 
 $("#editProfile").onclick = () => {
+$("#editProfile").onclick = () => {
   $("#nameInput").value = profile.display_name || "";
+  $("#usernameInput").value = profile.username || "";
   $("#bioInput").value = profile.bio || "";
   $("#profileDialog").showModal();
 };
+
 $("#profileForm").addEventListener("submit", async e => {
   e.preventDefault();
-  const display_name = $("#nameInput").value.trim().slice(0,32) || "Membro FAST SWIM";
-  const bio = $("#bioInput").value.trim().slice(0,120);
-  const { error } = await supabaseClient.from("profiles").update({ display_name, bio }).eq("id", currentUser.id);
-  if (error) { toast("Errore profilo: " + error.message); return; }
-  profile.display_name = display_name; profile.bio = bio;
-  renderProfile(); $("#profileDialog").close(); toast("Profilo aggiornato!");
+
+  const display_name = $("#nameInput").value.trim().slice(0, 32) || "Membro FAST SWIM";
+  const username = $("#usernameInput").value.trim().toLowerCase();
+  const bio = $("#bioInput").value.trim().slice(0, 120);
+
+  if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+    toast("Username: usa 3-20 caratteri, solo lettere, numeri e _.");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("profiles")
+    .update({ display_name, username, bio })
+    .eq("id", currentUser.id);
+
+  if (error) {
+    toast(error.code === "23505"
+      ? "Questo username è già utilizzato. Scegline un altro."
+      : "Errore profilo: " + error.message);
+    return;
+  }
+
+  profile.display_name = display_name;
+  profile.username = username;
+  profile.bio = bio;
+
+  renderProfile();
+  $("#profileDialog").close();
+  toast("Profilo aggiornato!");
 });
 
 function openCompose() {
